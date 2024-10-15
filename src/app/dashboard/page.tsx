@@ -1,14 +1,15 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
+import { KindeUser } from '@kinde-oss/kinde-auth-nextjs/types'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
 const page = async () => {
     const {getUser} = getKindeServerSession()
-    const user = getUser()
+    const user: KindeUser<Record<string, any>> =await  getUser();
 
-    if(!user || !(await user).id) redirect('/auth-callback?origin=dashboard');
+    if(!user || !user.id) redirect('/auth-callback?origin=dashboard');
   return (
-    <div>{(await user).email}</div>
+    <div>{user.email}</div>
   )
 }
 

@@ -7,12 +7,13 @@ import {
   getKindeServerSession,
 } from '@kinde-oss/kinde-auth-nextjs/server'
 import { ArrowRight } from 'lucide-react'
+import { KindeUser } from '@kinde-oss/kinde-auth-nextjs/types'
 // import UserAccountNav from './UserAccountNav'
 // import MobileNav from './MobileNav'
 
 const Navbar = () => {
   const { getUser } = getKindeServerSession()
-  // const user = getUser()
+  // const user: KindeUser<Record<string, any>> =await  getUser();
   const user = false;
 
   return (
