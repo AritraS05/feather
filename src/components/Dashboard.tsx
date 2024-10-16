@@ -5,6 +5,7 @@ import { trpc } from '@/app/_trpc/client'
 import { Ghost, Plus } from 'lucide-react';
 import Skeleton from "react-loading-skeleton";
 import Link from 'next/link';
+import {format} from 'date-fns'
 const Dashboard = () => {
 
   const {data:files, isLoading} = trpc.getUsersFiles.useQuery();
@@ -36,7 +37,7 @@ const Dashboard = () => {
                     <div className='px-6 mt-4 grid grid-cols-3 place-items-center py-2 gap-6 text-xs text-zinc-500'>
                           <div className='flex items-center gap-2'>
                             <Plus className='h-4 w-4'/>
-                            {file.createdAt}
+                            {format(new Date(file.createdAt), 'MMM dd, yyyy')}
                           </div>
                     </div>
                 </li>
