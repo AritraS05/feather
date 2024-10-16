@@ -2,14 +2,17 @@
 import React from 'react'
 import UploadButton from './UploadButton'
 import { trpc } from '@/app/_trpc/client'
-import { Ghost, Plus } from 'lucide-react';
+import { Ghost, MessageSquare, Plus, Trash } from 'lucide-react';
 import Skeleton from "react-loading-skeleton";
 import Link from 'next/link';
 import {format} from 'date-fns'
+import { Button } from './ui/button';
 const Dashboard = () => {
 
   const {data:files, isLoading} = trpc.getUsersFiles.useQuery();
   
+  const {mutate: deleteFile} = trpc.deleteFile.useMutation()
+
   return (
     <main className='mx-auto max-w-7xl md:p-10'>
         <div className='mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0 '>
@@ -39,6 +42,16 @@ const Dashboard = () => {
                             <Plus className='h-4 w-4'/>
                             {format(new Date(file.createdAt), 'MMM dd, yyyy')}
                           </div>
+                        <div className='flex items-center gap-2'>
+                          <MessageSquare className='h-4 w-4' />
+                          mocked
+                        </div>
+                        <Button 
+                        className='bg-gradient-to-r from-red-300 to-red-700 w-full' size='sm'
+                        onClick={()=>deleteFile({id:file.id})}
+                        >
+                          <Trash className='h-4 w-4' />
+                        </Button>
                     </div>
                 </li>
               ))}
