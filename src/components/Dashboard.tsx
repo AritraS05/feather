@@ -9,9 +9,15 @@ import {format} from 'date-fns'
 import { Button } from './ui/button';
 const Dashboard = () => {
 
+  const utils = trpc.useContext();
+
   const {data:files, isLoading} = trpc.getUsersFiles.useQuery();
   
-  const {mutate: deleteFile} = trpc.deleteFile.useMutation()
+  const {mutate: deleteFile} = trpc.deleteFile.useMutation({
+    onSuccess: () =>{
+      utils.getUsersFiles.invalidate();
+    }
+  })
 
   return (
     <main className='mx-auto max-w-7xl md:p-10'>
