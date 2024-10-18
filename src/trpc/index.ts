@@ -39,7 +39,7 @@ export const appRouter =  router({
             }
         })
     }),
-    getFilel: privateProcedure
+    getFile: privateProcedure
     .input(z.object({key:z.string()}))
     .mutation(async({ctx,input}) =>{
         const {userId} = ctx

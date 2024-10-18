@@ -8,13 +8,23 @@ import { Cloud, File } from 'lucide-react'
 import { Progress } from './ui/progress'
 import { useUploadThing } from '@/lib/uploadthing'
 import { useToast } from '@/hooks/use-toast'
+import { trpc } from '@/app/_trpc/client'
+import { useRouter } from 'next/navigation'
 
 const UploadDropzone =  () =>{
-
+    const router = useRouter()
     const [isUploading, setIsUploading] = useState<boolean>(true)
     const [uploadProgress, setUploadProgress] = useState<number>(0)
     const {toast} = useToast()
     const {startUpload} = useUploadThing("pdfUploader")
+
+    const {mutate:startPolling} = trpc.getFile.useMutation({
+        onSuccess:(file)=>{
+            router.push(`/dashboard/${file.id}`)
+        },
+        retry:true,
+        retryDelay:500,
+    })
 
     const startStimulatedProgress = () =>{
         setUploadProgress(0)
@@ -57,10 +67,11 @@ const UploadDropzone =  () =>{
             })
         }
 
-        
+
 
         clearInterval(progressInterval)
         setUploadProgress(100)
+        startPolling({key})
     }}>
         {({getRootProps, getInputProps,acceptedFiles}) =>(
             <div 
@@ -95,6 +106,13 @@ const UploadDropzone =  () =>{
                                 <Progress value={uploadProgress} className='h-1 w-full bg-zinc-200' />
                             </div>
                         ) : null}
+
+                        <input
+                            {...getInputProps()}
+                            type="file"
+                            id='dropzone-file'
+                            className='hidden'
+                        />
                     </label>
                 </div>
             </div>
