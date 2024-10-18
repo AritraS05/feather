@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
 const inter = Inter({ subsets: ["latin"] });
 import "react-loading-skeleton/dist/skeleton.css";
+import { Toaster } from "@/components/ui/toaster";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
             inter.className
           )}
         >
+          <Toaster />
           <Navbar />
           {children}
         </body>
